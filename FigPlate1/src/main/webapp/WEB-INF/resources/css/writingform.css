@@ -1,0 +1,266 @@
+body{
+	position:relative;
+	min-width:320px;
+	margin:0 auto;
+	font-size:100%;
+	line-height:100%;
+	text-size-adjust:100%;
+	-webkit-text-size-adjust:100%;
+	word-break:keep-all
+}
+.WritingPage_Container {
+	width: 678px;
+    margin: 70px auto 62px;
+}
+.WritingPage_DeleteContainer {
+    width: 600px;
+    margin: 75px auto 62px;
+    position: relative;
+}
+.WritingPage_MemberContainer {
+    width: 700px;
+    margin: 75px auto 62px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.WritingPage_Title {
+	margin-top: 10px;
+	margin-bottom: 20px;
+	line-height: 1.462;
+    color: #ff7100;
+    word-break: break-word;
+}
+.WritingPage_DeleteTitle {
+	/*font-weight: bold;*/
+    color: #ffffff;
+    font-size: 1.6rem;
+    margin-top: 10px;
+	/*margin-bottom: 20px;*/
+	line-height: 1.462;
+    word-break: break-word;
+    text-shadow: 6px 6px 16px rgb(0 0 0 / 90%); /*글자밑그림자 -> 글자 도드라져보이게*/
+}
+.WritingPage_DeleteForm {
+	margin-top: 20px;
+}
+.WritingPage_UpdateText {
+	font-size: 18px;
+    line-height: 1.27;
+    color: #9b9b9b;
+}
+.info {
+    padding: 20px 0;
+    position: relative;
+    display: block;
+}
+.info th {
+    width: 110px;
+    font-size: .9rem;
+    color: rgba(79,79,79,0.6);
+    line-height: 1.7;
+    text-align: left;
+    vertical-align: top;
+    padding-right: 10px;
+    padding-bottom: 5px;
+}
+.info td {
+    font-size: .9rem;
+    color: #4f4f4f;
+    line-height: 1.7;
+    text-align: left;
+    vertical-align: middle;
+    padding-bottom: 5px;
+}
+.info td img {
+	max-width: 100%;
+}
+.WritingPage_Filebox .WritingPage_UploadName { /*인풋 스타일 변경*/
+	display: inline-block;
+    height: 40px;
+    padding: 0 10px;
+    vertical-align: middle;
+    border: 1px solid #dddddd;
+    width: 78%;
+    color: #9b9b9b;
+}
+.WritingPage_Filebox label { /*label 스타일 변경*/
+	display: inline-block;
+    background-color: #999999;
+    cursor: pointer;
+    height: 40px;
+    margin-left: 10px;
+    padding-top: 10px;
+    padding-left: 14px;
+    padding-right: 14px;
+    border: 1px solid #999999;
+    border-radius: 50px;
+    font-size: 16px;
+    color: #FFFFFF;
+    text-align: center;
+}
+.WritingPage_Filebox input[type=file] { /*기존file스타일 삭제*/
+	position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+}
+.info td input, select, textarea {
+	border: 1px solid #DBDBDB;
+    border-radius: 3px;
+    box-sizing: border-box;
+    padding: 16px;
+    color: #9b9b9b;
+}
+.WritingPage_button {
+	margin-top: 14px;
+	line-height: 6;
+}
+.info td .WritingPage_Submitbutton {
+    min-width: 140px;
+    min-height: 50px;
+    padding-left: 14px;
+    padding-right: 14px;
+    border: 1px solid #ff7100;
+    border-radius: 50px;
+    font-size: 16px;
+    color: #FFFFFF;
+    text-align: center;
+    background-color: #ff7100;
+    cursor:pointer; 
+}
+.info td .WritingPage_Cancelbutton {
+    min-width: 140px;
+    min-height: 50px;
+    /*margin-right: 16px;*/
+    padding-left: 14px;
+    padding-right: 14px;
+    border: 1px solid #7F7F7F;
+    border-radius: 50px;
+    font-size: 16px;
+    color: #7F7F7F;
+    text-align: center;
+    background-color: #FFFFFF;
+    cursor:pointer; 
+}
+.error {
+	color:red
+}
+ul, li {
+	list-style: none;
+}
+.WritingPage_Message {
+	/*width: 700px;*/
+}
+.WritingPage_Message>li>img {
+	width: 15px;
+}
+.WritingPage_Message>li {
+	color: #9b9b9b;
+	font-size: 14px;
+    line-height: 2;
+    word-break: break-all; /*단어가 끊겨서 다음 줄로 넘어가는 부분*/
+    word-spacing: 0.5px; /*단어 사이의 간격*/
+    letter-spacing: 0.5px; /*글자 사이의 간격*/
+}
+input[type=password] {
+	border: 1px solid #DBDBDB;
+    border-radius: 3px;
+    box-sizing: border-box;
+    padding: 16px;
+    color: #9b9b9b;
+    width: 35%;
+    margin-right: 23px;
+}
+.WritingPage_DeleteSubmitbutton {
+	min-width: 140px;
+    min-height: 50px;
+    padding-left: 14px;
+    padding-right: 14px;
+    border: 1px solid #ff7100;
+    border-radius: 50px;
+    font-size: 16px;
+    color: #FFFFFF;
+    text-align: center;
+    background-color: #ff7100;
+    margin-right: 23px;
+}
+
+.WritingPage_DeleteCancelbutton {
+	min-width: 140px;
+    min-height: 50px;
+    padding-left: 14px;
+    padding-right: 14px;
+    border: 1px solid #7F7F7F;
+    border-radius: 50px;
+    font-size: 16px;
+    color: #7F7F7F;
+    text-align: center;
+    background-color: #FFFFFF;
+}
+
+.WritingPage_DeleteImg {
+	width: 100%;
+	vertical-align: middle;
+	 
+}
+.WritingPage_DeleteContent {
+	text-align: center;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate( -50%, -50% );
+	width: 500px;
+}
+
+.dinerBoardDelete_Title {
+ 	width: 100%;
+    height: 350px;
+    background-size: cover;
+    position: relative;
+    background-position: 0 51%;
+}
+.dinerBoardDelete_Img {
+	padding-top: 150px;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    background-position: center;
+    background-size: cover;
+    height: 208px;
+}
+.dinerBoardDelete_Title .dinerBoardDelete_Content {
+	position: absolute;
+	top: 0%
+}
+.dinerBoardDelete_Title .dinerBoardDelete_Content>p {
+    padding-top: 160px;
+    font-weight: 700;
+    color: #fff;
+    margin-left: 120px;
+    font-size: 3rem;
+    text-shadow: 6px 6px 16px rgb(0 0 0 / 90%);
+}
+.dinerBoardDelete_Title .dinerBoardDelete_Content>p.small-word {
+    line-height: 1.4rem;
+    font-weight: 400;
+    font-size: 1.3rem;
+    padding-top: 25px;
+}
+.dinerBoardDelete_Content {
+    width: 1000px;
+    margin: 0 auto;
+}
+.dinerBoardDelete_Form {
+    margin: 50px 0 175px;
+    text-align: center;
+}
+.dinerBoardDelete_Form p.orange-font {
+    color: #ff792a;
+    margin-top: 80px;
+    margin-bottom: 30px;
+    font-size: 1.8rem;
+}

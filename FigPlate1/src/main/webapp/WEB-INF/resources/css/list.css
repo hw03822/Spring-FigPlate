@@ -1,0 +1,147 @@
+@charset "UTF-8";
+.main-padding .main-section {
+	padding: 38px 0 36px 0;
+}
+
+.main-section .inner {
+	margin: 0 auto;
+	width: 800px;
+}
+
+.inner .title {
+	padding-right: 0;
+    padding-left: 0;
+    font-size: 1.438rem;
+    color: #ff792a;
+    line-height: 1.2em;
+    text-align: left;
+}
+
+.inner .menuId {
+		
+}
+
+.slider-container .tag-item {
+	display: inline-block;
+	margin: 15px 3px 0 3px;
+    padding: 0 20px;
+    font-size: 0.938rem;
+    line-height: 38px;
+    letter-spacing: 0em;
+    color: #6a6a6a;
+    border: 1px solid #cbcbcb;
+    border-radius: 50px;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.tag-item:before {
+	content: "#";
+    display: inline;
+}
+
+.inner .restaurant-container {
+	position:relative;
+}
+
+.restaurant-container .list-restaurants {
+	margin-top: 20px;
+	overflow: hidden;
+}
+
+.restaurant-container .list-restaurants li {
+	padding-right: 0;
+	padding-bottom: 20px;
+	width:100%;
+	position:relative;
+	display: inline-block;
+}
+
+.restaurant-container .list-restaurants .list-restaurant-item {
+	padding-right: 17px;
+    display: inline-block;
+    width: 50%;
+    float: left;
+    box-sizing: border-box;
+}
+
+.list-restaurant-item .restaurant-item {
+	position: relative;	
+}
+.restaurant-item img{
+	display: block;
+    width: 100%;
+}
+.restaurant-item .info{
+		padding-top: 9px;
+		text-decoration: none;
+}
+
+.restaurant-item .info .dinerId, .etc-info-1, .etc-info-2{
+	display: flex;
+	flex-direction: row;
+    align-content: center;
+    justify-content: flex-start;
+	margin-top: 6px;
+	font-size: 0.9rem;
+	color: #9b9b9b;
+	line-height: 1.3em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	padding-right: 10px;
+}
+
+.restaurant-item .info .title{
+	font-size: 1.3rem;
+    display: inline-block;
+    overflow: hidden;
+    max-width: 64%;
+    color: #555;
+    line-height: 1.3em;
+    vertical-align: middle;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+.restaurant-item .info .diner-star{
+    margin-left: 5px;
+    font-size: 1.37rem;
+    display: inline-block;
+    vertical-align: middle;
+    color: #ff792a;
+    line-height: 1em;
+}
+
+.restaurant-item .info .view-count-icon, .like-count-icon{
+	background-size: contain;
+    display: block;
+    width: 19px;
+    height: 19px;
+}
+.restaurant-item .info .view-count, .like-count{
+    margin-right: 10px;
+}
+
+.paging-container .paging-button {
+    display: inline-block;
+}
+
+.paging-container .paging-button a {
+	color: #cbcbcb;
+    display: inline-block;
+    margin-right: 10px;
+    height: 46px;
+    width: 46px;
+    font-size: 1.125rem;
+    line-height: 46px;
+    text-align: center;
+    border: 2px solid #cbcbcb;
+    border-radius: 50px;
+}
+
+.paging-container .paging-button-selected a {
+	color: #ff792a;
+    border: 2px solid #ff792a;
+}

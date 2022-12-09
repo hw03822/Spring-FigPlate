@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kosa.myapp.diner.dao.IReplyRepository">
+
+	<select id="selectMaxReplyId" resultType="int">
+		select 
+			nvl(max(reply_id), 2000) as "replyId"
+		from reply
+	</select>
+	
+	<insert id="replyDiner" parameterType="com.kosa.myapp.diner.model.ReplyVO">
+		insert into reply
+			(reply_id, reply_writer_id, diner_id, reply_content, reply_star, reply_write_date)	
+		values
+			(#{replyId}, #{replyWriterId}, #{dinerId}, #{replyContent}, #{replyStar}, SYSDATE)
+	</insert>
+	
+	<!-- insert id="replyFileData" parameterType="com.kosa.myapp.diner.model.DinerUploadFileVO">
+		insert into diner_upload_file
+			(file_id, reply_id, file_name, file_size, file_content_type, file_data)
+		values 
+			(#{fileId}, #{replyId}, #{fileName}, #{fileSize}, #{fileContentType}, #{fileData})
+	</insert-->
+	
+	<select id="replyList" parameterType="int" resultType="com.kosa.myapp.diner.model.ReplyVO">
+		select 
+			reply_id			as "replyId", 
+			reply_writer_id 	as "replyWriterId",
+			diner_id			as "dinerId", 
+			reply_content 		as "replyContent", 
+			reply_star 			as "replyStar", 
+			reply_write_date 	as "replyWriteDate"
+		from reply
+		where diner_id = #{dinerId}
+		order by reply_write_date desc
+	</select>
+	
+	<select id="selectReply" parameterType="int" resultType="com.kosa.myapp.diner.model.ReplyVO">
+		select 
+			reply_id			as "replyId", 
+			reply_writer_id 	as "replyWriterId",
+			diner_id			as "dinerId", 
+			reply_content 		as "replyContent", 
+			reply_star 			as "replyStar", 
+			reply_write_date 	as "replyWriteDate"
+		from reply
+		where reply_id=#{replyId}
+	</select>
+	
+	<update id="updateReply" parameterType="com.kosa.myapp.diner.model.ReplyVO">
+		update reply
+		set
+			reply_writer_id=#{replyWriterId}, reply_content=#{replyContent}, reply_star=#{replyStar}, reply_write_date=SYSDATE
+		where
+			reply_id=#{replyId} and diner_id=#{dinerId}
+	</update>
+	
+	<select id="selectDeleteReply" parameterType="map" resultType="com.kosa.myapp.diner.model.ReplyVO">
+		select 
+			reply_writer_id		as "replyWriterId"
+		from 
+			reply
+		where 
+			 reply_id=#{replyId} and diner_id=#{dinerId}
+	</select>
+	
+	<delete id="deleteReplyByReplyId" parameterType="map">
+		delete from reply where reply_id=#{replyId} and diner_id=#{dinerId}
+	</delete>
+	
+	<select id="selectStarAvg" parameterType="int" resultType="double">
+		select nvl(round(avg(reply_star), 2), 0)
+		from reply
+		where diner_id=#{dinerId}
+	</select>
+		
+	<update id="insertDinerStar" parameterType="com.kosa.myapp.diner.model.DinerVO">
+		update diner
+		set diner_star = #{dinerStar}
+		where diner_id = #{dinerId}
+	</update>
+
+</mapper>

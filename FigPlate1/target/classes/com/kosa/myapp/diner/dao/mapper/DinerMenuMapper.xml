@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kosa.myapp.diner.dao.IDinerMenuRepository">
+	
+	<select id="selectAllMenu" resultType="com.kosa.myapp.diner.model.MenuVO">
+		<![CDATA[
+		SELECT 
+			MENU_ID				AS menuId, 
+			MENU_NAME			AS menuName,
+			MENU_DESCRIPTION	AS menuDescription
+		FROM MENU
+		ORDER BY menuId
+	]]>
+	</select>
+	
+	<select id="selectMaxManuId" parameterType="int" resultType="int">
+		<![CDATA[
+		SELECT 
+			NVL(MAX(MENU_ID),0) AS "menuId"
+		FROM MENU
+	]]>
+	</select>
+	
+	<insert id="insertNewMenu" parameterType="com.kosa.myapp.diner.model.MenuVO">
+	<![CDATA[
+		INSERT INTO MENU
+			(MENU_ID, MENU_NAME, MENU_DESCRIPTION)
+		VALUES
+			(SEQ_MENU_ID.NEXTVAL, #{menuName}, #{menuDescription})
+	]]>
+	</insert>
+	
+	<update id="updateMenu" parameterType="com.kosa.myapp.diner.model.MenuVO">
+	<![CDATA[
+		UPDATE MENU
+		SET
+			MENU_ID = #{menuId}
+			MENU_NAME = #{menuName}, 
+			MENU_DESCRIPTION = #{menuDescription}, 
+		WHERE
+			MENUId = #{menuId}
+	]]>
+	</update>
+	
+	<delete id="deleteMenu" parameterType="int">
+	<![CDATA[
+		DELETE MENU
+		WHERE
+			MENU_Id = #{menuId}
+	]]>
+	</delete>
+	
+	<select id="selectMenuNameByMenuId" parameterType="int" resultType="String">
+		SELECT 
+			MENU_NAME		AS "menuName"
+		FROM MENU
+        where MENU_ID = #{menuId}
+	</select>
+	
+</mapper>

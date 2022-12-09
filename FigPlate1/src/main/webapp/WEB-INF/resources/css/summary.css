@@ -1,0 +1,43 @@
+@charset "UTF-8";
+
+.main-section {
+    padding: 38px 0 36px 0;
+}
+
+.content{
+    margin: 0 auto;
+    width: 2000px;
+}
+
+.content .title {
+	font-weight: bold;
+    padding: 24px;
+    margin: 20px 0;
+    font-size: 27px;
+    color: #ff792a;
+    text-align: left;
+}
+
+.content .item {
+	display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: space-evenly;
+}
+
+.content .item #chartdiv, #chartdiv2 {
+	width: 45%;
+    height: 500px;
+}
+
+.summary {
+	text-align: center;
+	margin: 70px 0px 40px;
+    font-size: 21px;
+}
+
+.summary .summary-value {
+	color: #ff7100;
+	font-weight: bold;
+
+

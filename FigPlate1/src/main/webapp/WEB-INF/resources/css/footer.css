@@ -1,0 +1,117 @@
+@charset "UTF-8";
+
+.footer {
+    text-align: left;
+    position: relative;
+    background-color: #3e3e3e;
+}
+
+.footer .inner {
+	margin: 0 auto;
+    padding-top: 65px;
+    min-height: 430px;
+    max-width: 1200px;
+    position: relative;
+}
+
+.inner .mainlogo {
+    display: inline-block;
+    margin-right: 168px;
+    vertical-align: top;
+}
+
+.mainlogo .btn-mp {
+    display: block;
+}
+
+.mainlogo .mainlogo_img {
+    width: 130px;
+    
+}
+
+.mainlogo .subtitle {
+    display: block;
+    position: relative;
+    margin-top: 28px;
+    padding-top: 15px;
+    font-size: 0.875rem;
+    color: #616161;
+}
+
+.mainlogo .subtitle:before {
+	content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 1px;
+    width: 30px;
+    background-color: #6a6a6a;
+}
+
+.inner .sns-shortcut {
+	position: absolute;
+    top: 62px;
+    right: 0;
+}
+
+.sns-shortcut .btn {
+    margin-left: 30px;
+    width: 45px;
+    height: 45px;
+    display: inline-block;
+    text-indent: -9999px;
+    background-size: contain;
+}
+
+.inner .links-external {
+	display: inline-block;
+    width: 614px;
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+
+.links-external .list-links {
+	float: left;
+}
+
+.links-external li {
+	display: block;
+    width: 307px;
+}
+
+.links-external li a {
+    font-size: 1rem;
+    line-height: 35px;
+    color: #9b9b9b;
+}
+
+.inner .language-copyrights {
+    padding: 36px 0 42px 0;
+    position: relative;
+    border-top: 1px solid #6a6a6a;
+}
+
+.language-copyrights .select-language {
+    position: absolute;
+    top: 47px;
+    right: 0;
+}
+
+.language-copyrights a {
+    color: #ffffff;
+    font-size: 1rem;
+}
+
+.language-copyrights .select-language a+a:before {
+	margin: 0 8px 0 6px;
+	content: '|';
+    display: inline-block;
+}
+
+.language-copyrights small {
+    font-size: 0.875rem;
+    line-height: 22px;
+    display: block;
+    color: #9b9b9b;
+}

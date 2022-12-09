@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kosa.myapp.diner.dao.IDinerRepository">
+	
+	<select id="selectMaxDinerNo" resultType="int">
+		select 
+			nvl(max(diner_id), 0) as "dinerId"
+		from diner
+	</select>
+	
+	<select id="selectMaxFileId" resultType="int">
+		select 
+			nvl(max(file_id), 0) as "fileId"
+		from diner_upload_file
+	</select>
+	
+	<insert id="insertDiner" parameterType="com.kosa.myapp.diner.model.DinerVO">
+		insert into diner
+			(diner_id, diner_writer_id, diner_title, diner_content, diner_write_date, 
+ 			diner_read_count, diner_like_count, menu_id)
+ 		values
+ 			(#{dinerId}, #{dinerWriterId}, #{dinerTitle}, #{dinerContent}, SYSDATE, 0, 0, #{menuId})
+	</insert>
+	
+	<insert id="insertFileData" parameterType="com.kosa.myapp.diner.model.DinerUploadFileVO">
+		insert into diner_upload_file
+			(file_id, diner_id, file_name, file_size, file_content_type, file_data)
+		values 
+			(#{fileId}, #{dinerId}, #{fileName}, #{fileSize}, #{fileContentType}, #{fileData})
+	</insert>
+	
+	<select id="selectDiner" parameterType="int" resultType="com.kosa.myapp.diner.model.DinerVO">
+		<![CDATA[
+			SELECT 
+				DINER.DINER_ID 				AS "dinerId", 
+				DINER_WRITER_ID			AS "dinerWriterId", 
+				DINER_TITLE				AS "dinerTitle", 
+				DINER_CONTENT			AS "dinerContent", 
+				DINER_WRITE_DATE		AS "dinerWriteDate", 
+				DINER_READ_COUNT		AS "dinerReadCount", 
+				DINER_LIKE_COUNT 		AS "dinerLikeCount", 
+				MENU_ID					AS "menuId",
+				DINER_UPLOAD_FILE.FILE_ID			AS "fileId", 
+				DINER_UPLOAD_FILE.FILE_NAME			AS "fileName", 
+				DINER_UPLOAD_FILE.FILE_SIZE			AS "fileSize",
+				DINER_UPLOAD_FILE.FILE_CONTENT_TYPE	AS "fileContentType"
+			FROM DINER LEFT OUTER JOIN DINER_UPLOAD_FILE 
+				ON DINER.DINER_ID=DINER_UPLOAD_FILE.DINER_ID 
+			WHERE DINER.DINER_ID=#{dinerId}
+		]]>
+	</select>
+	
+	<update id="updateDiner" parameterType="com.kosa.myapp.diner.model.DinerVO">
+		update diner
+		set
+			menu_id=#{menuId}, diner_writer_Id=#{dinerWriterId}, diner_title=#{dinerTitle}, 
+			diner_content=#{dinerContent}, diner_write_date=SYSDATE
+		where
+			diner_id=#{dinerId}
+	</update>
+	
+	<update id="updateFileData" parameterType="com.kosa.myapp.diner.model.DinerUploadFileVO">
+		update diner_upload_file
+		set
+			file_name=#{fileName}, file_size=#{fileSize}, 
+			file_content_type=#{fileContentType}, file_data=#{fileData}
+		where 
+			file_id=#{fileId}
+	</update>
+	
+	<select id="selectDeleteDiner" parameterType="int" resultType="com.kosa.myapp.diner.model.DinerVO">
+		select 
+			menu_id				as "menuId",
+			diner_writer_id 	as	"dinerWriterId"
+		from 
+			diner
+		where
+			diner_id = #{dinerId}
+	</select>
+	
+	<select id="getFile" parameterType="int" resultType="com.kosa.myapp.diner.model.DinerUploadFileVO">
+		select 
+			file_id				as "fileId",
+			diner_id			as "dinerId",
+			file_name			as "fileName",
+			file_size			as "fileSize",
+			file_content_type	as "fileContentType",
+			file_data			as "fileData"
+		from diner_upload_file
+		where file_id=#{fileId}
+	</select>
+	
+	<select id="getPassword" parameterType="String" resultType="String">
+		select password
+		from member
+		where user_id = #{userId}
+	</select>
+	
+	<!-- 게시글 삭제 -->
+	<delete id="deleteFileData" parameterType="int">
+		delete from diner_upload_file
+		where exists (select diner_id from diner
+					where diner.diner_id=#{dinerId} and diner.diner_id = diner_upload_file.diner_id)
+	</delete>
+	
+	<delete id="deleteDinerReply" parameterType="int">
+		delete from reply
+		where exists (select diner_id from diner
+					where diner.diner_id=#{dinerId} and diner.diner_id = reply.diner_id)
+	</delete>
+	
+	<delete id="deleteDinerByDinerId" parameterType="int">
+		delete from diner where diner_id=#{dinerId}
+	</delete>
+	
+	<delete id="deleteDinerLikeByDinerId" parameterType="int">
+		delete from diner_like where diner_id=#{dinerId}
+	</delete>
+	
+	<select id="selectStarAvg" parameterType="int" resultType="double">
+		select nvl(round(avg(reply_star), 2), 0)
+		from reply
+		where diner_id=#{dinerId}
+	</select>
+	
+	<select id="getStarAvg" parameterType="int" resultType="double">
+		select nvl(diner_star, 0) from diner
+		where diner_id = #{dinerId}
+	</select>
+	
+	<update id="insertDinerStar" parameterType="com.kosa.myapp.diner.model.DinerVO">
+		update diner
+		set diner_star = #{dinerStar}
+		where diner_id = #{dinerId}
+	</update>
+	
+	<select id="selectDinerListbyStatisticId" parameterType="map" resultType="com.kosa.myapp.diner.model.DinerVO">
+	<![CDATA[
+       SELECT 
+         a.DINER_ID             AS "dinerId", 
+         DINER_WRITER_ID         AS "dinerWriterId", 
+         DINER_TITLE            AS "dinerTitle", 
+         DINER_CONTENT         AS "dinerContent", 
+         DINER_WRITE_DATE      AS "dinerWriteDate", 
+         DINER_READ_COUNT      AS "dinerReadCount", 
+         DINER_LIKE_COUNT       AS "dinerLikeCount", 
+         MENU_ID               AS "menuId",
+         DINER_STAR            AS "dinerStar",
+         RNUM+1               AS "dinerSeq",
+         FILE_ID               AS "fileId"
+       FROM (
+          SELECT 
+             DINER_ID,  
+             DINER_WRITER_ID, 
+             DINER_TITLE, 
+             DINER_CONTENT, 
+             DINER_WRITE_DATE, 
+             DINER_READ_COUNT, 
+             DINER_LIKE_COUNT,
+             MENU_ID,
+             DINER_STAR,
+             ROWNUM AS RNUM
+          FROM (
+             SELECT * FROM DINER
+             ORDER BY (CASE WHEN 'read' = #{statisticId} THEN DINER_READ_COUNT 
+                               WHEN 'like' = #{statisticId} THEN DINER_LIKE_COUNT 
+                               END) DESC
+          )
+       ) a LEFT OUTER JOIN DINER_UPLOAD_FILE b ON a.DINER_ID = b.DINER_ID
+       WHERE RNUM BETWEEN #{start} AND #{end}
+   ]]>
+
+	</select>
+	
+	<select id="selectDinerListbyMenu" parameterType="map" resultType="com.kosa.myapp.diner.model.DinerVO">
+	<![CDATA[
+		SELECT 
+			a.DINER_ID 				AS "dinerId", 
+			DINER_WRITER_ID			AS "dinerWriterId", 
+			DINER_TITLE				AS "dinerTitle", 
+			DINER_CONTENT			AS "dinerContent", 
+			DINER_WRITE_DATE		AS "dinerWriteDate", 
+			DINER_READ_COUNT		AS "dinerReadCount", 
+			DINER_LIKE_COUNT 		AS "dinerLikeCount", 
+			MENU_ID					AS "menuId",
+			DINER_STAR              AS "dinerStar",
+			RNUM+1					AS "dinerSeq",
+			FILE_ID               AS "fileId"
+	    FROM (
+	    	SELECT 
+	    		DINER_ID,  
+	    		DINER_WRITER_ID,  
+	    		DINER_TITLE, 
+	    		DINER_CONTENT, 
+	    		DINER_WRITE_DATE, 
+	    		DINER_READ_COUNT, 
+	    		DINER_LIKE_COUNT,
+	    		MENU_ID,
+	    		DINER_STAR,
+	    		ROWNUM AS RNUM
+	    	FROM (
+	    		SELECT * FROM DINER
+	    		WHERE MENU_ID=#{menuId}
+	    		ORDER BY DINER_TITLE
+	    	)
+	    ) a LEFT OUTER JOIN DINER_UPLOAD_FILE b ON a.DINER_ID = b.DINER_ID
+	    WHERE RNUM BETWEEN #{start} AND #{end}
+	]]>
+	</select>
+	
+	<update id="updateReadCount" parameterType="int">
+		<![CDATA[
+			UPDATE DINER 
+				SET DINER_READ_COUNT = DINER_READ_COUNT+1 
+			WHERE DINER_ID=#{dinerId}
+		]]>
+	</update>
+	
+	<select id="selectTotalDinerCount" resultType="int">
+		<![CDATA[
+			SELECT COUNT(DINER_ID) AS "count" 
+			FROM DINER
+		]]>
+		</select>
+		
+		<select id="selectTotalDinerCountByMenuId" parameterType="int" resultType="int">
+		<![CDATA[
+			SELECT COUNT(DINER_ID) AS "count"
+			FROM DINER 
+			WHERE MENU_ID=#{menuId}	
+		]]>
+		</select>
+		
+		<select id="selectTotalDinerCountByKeyword" parameterType="string" resultType="int">
+		<![CDATA[
+			SELECT 
+				COUNT(*) FROM DINER
+			WHERE 
+				DINER_TITLE LIKE #{keyword} OR DINER_CONTENT LIKE #{keyword}
+		]]>
+		</select> 
+	
+		<select id="searchListByContentKeyword" parameterType="hashmap" resultType="com.kosa.myapp.diner.model.DinerVO">
+		<![CDATA[
+			SELECT 
+				a.DINER_ID 				AS "dinerId", 
+				DINER_WRITER_ID			AS "dinerWriterId", 
+				DINER_TITLE				AS "dinerTitle", 
+				DINER_CONTENT			AS "dinerContent", 
+				DINER_WRITE_DATE		AS "dinerWriteDate", 
+				DINER_READ_COUNT		AS "dinerReadCount", 
+				DINER_LIKE_COUNT 		AS "dinerLikeCount", 
+				MENU_ID					AS "menuId",
+				DINER_STAR              AS "dinerStar",
+				RNUM+1 					AS "dinerSeq",
+				FILE_ID               	AS "fileId"
+		    FROM (
+		    	SELECT 
+		    		DINER_ID,  
+		    		DINER_WRITER_ID,
+		    		DINER_TITLE, 
+		    		DINER_CONTENT, 
+		    		DINER_WRITE_DATE, 
+		    		DINER_READ_COUNT, 
+		    		DINER_LIKE_COUNT,
+		    		MENU_ID,
+		    		DINER_STAR,
+		    		ROWNUM AS RNUM
+		    	FROM (
+		    		SELECT * FROM DINER
+		    		WHERE
+		    			DINER_TITLE LIKE #{keyword}
+			    		OR 
+			    		DINER_CONTENT LIKE #{keyword}
+		    		ORDER BY DINER_ID
+		    	)
+		    )a LEFT OUTER JOIN DINER_UPLOAD_FILE b ON a.DINER_ID = b.DINER_ID
+		    WHERE RNUM BETWEEN #{start} AND #{end}
+		]]>
+	</select>
+	
+	<update id="updateDinerLikeCount" parameterType="int">
+		<![CDATA[ UPDATE diner SET diner_like_count = diner_like_count + 1 
+					WHERE diner_id = #{dinerId} ]]>
+	</update>
+	
+	<select id="selectMaxLikeId" resultType="int">
+		<![CDATA[ SELECT NVL(MAX(like_id), 0) AS "likeId" FROM diner_like ]]>
+	</select>
+	
+	<!-- insert id="insertDinerLike" parameterType="com.kosa.myapp.diner.model.Diner_LikeVO">
+		<![CDATA[ INSERT INTO diner_like ( like_id, diner_id, user_id ) 
+					VALUES ( #{likeId}, #{dinerId}, #{userId} ) ]]>
+	</insert-->
+	
+	<insert id="insertDinerLike" parameterType="com.kosa.myapp.diner.model.Diner_LikeVO">
+      <![CDATA[ 
+      		INSERT INTO diner_like ( like_id, diner_id, user_id ) 
+            SELECT  #{likeId}, #{dinerId}, #{userId} 
+            FROM DUAL
+            WHERE NOT EXISTS ( SELECT 1 FROM diner_like 
+                           WHERE diner_id = #{dinerId} AND user_id = #{userId} ) 
+      ]]>
+   </insert>
+   
+</mapper>

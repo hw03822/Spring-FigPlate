@@ -1,0 +1,7 @@
+eclipse.preferences.version=1
+encoding//src/main/java/com/kosa/myapp/diner/controller/DinerController.java=UTF-8
+encoding//src/main/java/com/kosa/myapp/diner/dao/IDinerRepository.java=UTF-8
+encoding//src/main/java/com/kosa/myapp/diner/service/impl/DinerService.java=UTF-8
+encoding//src/main/java/com/kosa/myapp/diner/service/impl/ReplyService.java=UTF-8
+encoding//src/main/java/com/kosa/myapp/member/controller/MemberController.java=UTF-8
+encoding//src/main/webapp/WEB-INF/views/home.jsp=UTF-8

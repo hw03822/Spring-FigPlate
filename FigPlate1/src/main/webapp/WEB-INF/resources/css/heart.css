@@ -1,0 +1,15 @@
+.heartSvg {
+	display: block;
+    width: 32px;
+    height: 32px;
+    margin-bottom: 0;
+}
+.heartfull {
+	display: block;
+	width:32px;
+	height:32px;
+}
+#result {
+	color: #9b9b9b;
+    font-size: 1rem;
+}

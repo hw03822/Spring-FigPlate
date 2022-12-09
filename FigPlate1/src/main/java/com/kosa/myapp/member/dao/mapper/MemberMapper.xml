@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kosa.myapp.member.dao.IMemberRepository">
+
+	<insert id="insertMember"
+		parameterType="com.kosa.myapp.member.model.MemberVO">
+	<![CDATA[
+		insert into
+		member (user_id, name, password, birth_date, gender, phone, email, role)
+		values (#{userId}, #{name}, #{password}, #{birthDate}, #{gender}, #{phone}, #{email}, #{role})
+	]]>
+	</insert>
+
+	<select id="selectMember" parameterType="string"
+		resultType="com.kosa.myapp.member.model.MemberVO">
+	<![CDATA[
+		select
+			user_id		as "userId",
+			name		as "name",
+			password	as "password",
+			birth_date	as "birthDate",
+			gender		as "gender",
+			phone		as "phone",
+			email		as "email",
+			role		as "role"
+		from member
+		where user_id=#{userId}
+	]]>
+	</select>
+
+	<update id="updateMember"
+		parameterType="com.kosa.myapp.member.model.MemberVO">
+	<![CDATA[
+		update member
+		set
+			password=#{password}, phone=#{phone}, email=#{email}
+		where user_id=#{userId}
+	]]>
+	</update>
+
+	<select id="getPassword" parameterType="string"
+		resultType="string">
+	<![CDATA[
+		select password
+		from member
+		where user_id = #{userId}
+	]]>
+	</select>
+
+	<delete id="deleteMemberFromMember" parameterType="com.kosa.myapp.member.model.MemberVO">
+	<![CDATA[
+		delete from member
+		where user_id=#{userId} and password=#{password}
+		]]>
+	</delete>
+	
+	<delete id="deleteMemberFromReply" parameterType="com.kosa.myapp.member.model.MemberVO">
+		<![CDATA[
+		DELETE from reply
+		WHERE reply_writer_id=#{userId}
+		]]>
+	</delete>
+	
+	<delete id="deleteMemberFromDiner" parameterType="com.kosa.myapp.member.model.MemberVO">
+		<![CDATA[
+		DELETE diner
+		WHERE diner_writer_id=#{userId}
+		]]>
+	</delete>
+	
+	<delete id="deleteMemberFromDinerLike" parameterType="com.kosa.myapp.member.model.MemberVO">
+		<![CDATA[
+		DELETE diner_like
+		WHERE user_id=#{userId}
+		]]>
+	</delete>
+	
+	<delete id="deleteMemberFromDinerUploadFile" parameterType="com.kosa.myapp.member.model.MemberVO">
+		<![CDATA[
+		delete from diner_upload_file
+		where exists (select diner_id from diner
+					where diner.diner_writer_id=#{userId} and diner.diner_id = diner_upload_file.diner_id)
+		]]>
+	</delete>
+	
+	<delete id="deleteHostMemberFromDinerLike" parameterType="com.kosa.myapp.member.model.MemberVO">
+		delete from diner_like 
+        where exists (select diner_id from diner
+					where diner.diner_writer_id=#{userId} and diner.diner_id = diner_like.diner_id)
+		
+	</delete>
+	
+	<delete id="deleteHostMemberFromReply" parameterType="com.kosa.myapp.member.model.MemberVO">
+		delete from reply 
+        where exists (select diner_id from diner
+					where diner.diner_writer_id=#{userId} and diner.diner_id = reply.diner_id)
+	</delete>
+	
+	<select id="selectLikedDinerList" parameterType="String"
+		resultType="com.kosa.myapp.diner.model.DinerVO">
+	<![CDATA[
+		SELECT 
+			DINER.DINER_ID 				AS "dinerId", 
+			DINER_WRITER_ID			AS "dinerWriterId", 
+			DINER_TITLE				AS "dinerTitle", 
+			DINER_CONTENT			AS "dinerContent", 
+			DINER_WRITE_DATE		AS "dinerWriteDate", 
+			DINER_READ_COUNT		AS "dinerReadCount", 
+			DINER_LIKE_COUNT 		AS "dinerLikeCount", 
+			MENU_ID					AS "menuId",
+			DINER_STAR				AS "dinerStar",
+			DINER_UPLOAD_FILE.FILE_ID			AS "fileId", 
+			DINER_UPLOAD_FILE.FILE_NAME			AS "fileName", 
+			DINER_UPLOAD_FILE.FILE_SIZE			AS "fileSize",
+			DINER_UPLOAD_FILE.FILE_CONTENT_TYPE	AS "fileContentType"
+		FROM DINER LEFT OUTER JOIN DINER_UPLOAD_FILE 
+			ON DINER.DINER_ID=DINER_UPLOAD_FILE.DINER_ID 
+		WHERE DINER.DINER_ID IN (SELECT diner_id
+						 		 FROM diner
+								 WHERE diner_id IN
+									(SELECT diner_id
+									 FROM diner_like
+									 WHERE user_id = #{userId}))
+	]]>
+	</select>
+
+	<select id="getAvgDinerStar" parameterType="int"
+		resultType="double">
+	<![CDATA[
+		select sum(reply_star)/count(reply_id)
+		from reply
+		where diner_id = #{dinerId}
+	]]>
+	</select>
+	
+	<select id="getLikedDinerId" parameterType="String"
+		resultType="int">
+	<![CDATA[
+		SELECT diner_id
+		FROM diner_like
+		WHERE user_id = #{userId}
+	]]>		
+	</select>
+
+	<select id="getCountLikedDinerId" parameterType="String"
+		resultType="int">
+	<![CDATA[
+		SELECT count(diner_id)
+		FROM diner_like
+		where user_id = #{userId}
+	]]>
+	</select>
+	
+	<update id="updateLikeCount" parameterType="int">
+	<![CDATA[
+		UPDATE DINER 
+		SET diner_like_count = diner_like_count +1 
+		WHERE diner_id =#{dinerId}
+	]]>
+	</update>
+
+
+	<select id="getGenderStatistic" parameterType="int"
+		resultType="int">
+		<![CDATA[ SELECT m.gender FROM member m, diner_like l 
+					WHERE m.user_id = l.user_id AND l.diner_id = #{dinerId} ]]>
+	</select>
+
+	<select id="getMostGenderStatistic" parameterType="int"
+		resultType="int">
+		<![CDATA[ SELECT STATS_MODE(m.gender) FROM member m, diner_like l 
+					WHERE m.user_id = l.user_id AND l.diner_id = #{dinerId} ]]>
+	</select>
+
+	<select id="getAgeGroup" parameterType="int" resultType="int">
+		<![CDATA[ SELECT FLOOR(TRUNC(MONTHS_BETWEEN(SYSDATE, birth_date)/12)/10)*10 
+					FROM member m, diner_like l WHERE m.user_id = l.user_id AND l.diner_id= #{dinerId} ]]>
+	</select>
+
+	<select id="getMostAgeGroup" parameterType="int"
+		resultType="int">
+		<![CDATA[ SELECT STATS_MODE(FLOOR(TRUNC(MONTHS_BETWEEN(SYSDATE, birth_date)/12)/10)*10) AS AGE 
+					FROM member m, diner_like l 
+					WHERE m.user_id = l.user_id AND l.diner_id = #{dinerId} ]]>
+	</select>
+
+	<select id="getDinerIdByUserId" parameterType="string"
+		resultType="int">
+		<![CDATA[ SELECT diner_id FROM diner d, member m 
+					WHERE d.diner_writer_id = m.user_id AND m.user_id = #{userId} ]]>
+	</select>
+	
+	<!-- 좋아요 목록 랜덤으로 3개 뽑아오기 -->
+	<select id="selectLikedDinerListRandom" parameterType="String"
+		resultType="com.kosa.myapp.diner.model.DinerVO">
+		<![CDATA[select 
+            DINER_ID 				AS "dinerId",  
+			DINER_TITLE				AS "dinerTitle", 
+			DINER_CONTENT			AS "dinerContent",  
+			DINER_READ_COUNT		AS "dinerReadCount", 
+			DINER_LIKE_COUNT 		AS "dinerLikeCount", 
+			MENU_ID					AS "menuId",
+			DINER_STAR				AS "dinerStar",
+			FILE_ID			AS "fileId", 
+            FILE_NAME			AS "fileName", 
+			FILE_SIZE			AS "fileSize",
+			FILE_CONTENT_TYPE	AS "fileContentType"
+		from (
+		    SELECT 
+					DINER.DINER_ID ,  
+					DINER_TITLE, 
+					DINER_CONTENT,  
+					DINER_READ_COUNT, 
+					DINER_LIKE_COUNT, 
+					MENU_ID	,
+					DINER_STAR,
+					DINER_UPLOAD_FILE.FILE_ID, 
+					DINER_UPLOAD_FILE.FILE_NAME, 
+					DINER_UPLOAD_FILE.FILE_SIZE,
+					DINER_UPLOAD_FILE.FILE_CONTENT_TYPE
+				FROM DINER LEFT OUTER JOIN DINER_UPLOAD_FILE 
+					ON DINER.DINER_ID=DINER_UPLOAD_FILE.DINER_ID 
+				WHERE DINER.DINER_ID IN (SELECT diner_id
+								 		 FROM diner
+										 WHERE diner_id IN
+											(SELECT diner_id
+											 FROM diner_like
+											 WHERE user_id = #{userId}))
+		        order by DBMS_RANDOM.RANDOM
+		)
+		where rownum <= 3]]>
+	</select>
+	
+</mapper>
